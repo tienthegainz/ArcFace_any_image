@@ -20,7 +20,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 from arcface import *
 
-def build_efficent_nets(n_classes, type_eff='b0', regulizer = None, target_size = (224, 224)):
+def build_efficent_nets(n_classes, type_eff='b0', regularizer = None, target_size = (224, 224)):
     # Clear memory for new model
     K.clear_session()
     img_input = Input(shape=(target_size[0], target_size[1], 3))
@@ -36,6 +36,6 @@ def build_efficent_nets(n_classes, type_eff='b0', regulizer = None, target_size 
     x = base_model.output
     x = GlobalAveragePooling2D()(x)
     x = Dropout(0.5)(x)
-    output = ArcFace(n_classes=11)([x, label])
+    output = ArcFace(n_classes=11, regularizer=regularizer)([x, label])
 
     return Model([img_input, label], output)
